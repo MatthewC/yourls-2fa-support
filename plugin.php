@@ -3,7 +3,7 @@
 Plugin Name: 2FA Support
 Plugin URI: https://ghst.pw/2fa-support
 Description: Adds 2FA support
-Version: 1.0
+Version: 1.1
 Author: Matthew
 Author URI: https://matc.io
 */
@@ -49,6 +49,7 @@ function matthew_2fa_display_page() {
     if( !array_key_exists( YOURLS_USER, $matthew_2fa_tokens ) || !$matthew_2fa_tokens[ YOURLS_USER ][ 'active' ] ) {
         $matthew_2fa_tokens[ YOURLS_USER ] = [
             'active' => false,
+            'type' => 'otp',
             'secret' => '',
         ];
         yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
@@ -67,6 +68,7 @@ function matthew_2fa_display_page() {
 
         $matthew_2fa_tokens[ YOURLS_USER ][ 'active' ] = false;
         $matthew_2fa_tokens[ YOURLS_USER ][ 'secret' ] = '';
+        $matthew_2fa_tokens[ YOURLS_USER ][ 'type' ] = '';
         yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
 
         echo '<p><span color="green">'. yourls__( 'Deactivated!' ). '</span></p>';
@@ -171,13 +173,22 @@ function matthew_2fa_validate( $is_valid ) {
 
     // User has enabled 2FA
 
+    //TODO: Handle multiple types of 2FA (i.e., YubiKey)
+
+    // If the user has set an OTP, verify using that
+    if( $matthew_2fa_tokens[ YOURLS_USER ][ 'type' ] ) {
+        return matthew_2fa_add_input( $matthew_2fa_tokens );
+    }
+}
+
+function matthew_2fa_verify_otp( $matthew_2fa_user_settings ) {
     // Ensure 2FA token was sent.
     if( !isset( $_REQUEST[ 'matthew_2fa_otp' ] )) {
         return false;
     }
     
     $matthew_2fa_ga = new PHPGangsta_GoogleAuthenticator();
-    $matthew_2fa_secret = $matthew_2fa_tokens[ YOURLS_USER ][ 'secret' ];
+    $matthew_2fa_secret = $matthew_2fa_user_settings[ YOURLS_USER ][ 'secret' ];
 
     // Verify token with secret
     if( $matthew_2fa_ga->verifyCode( $matthew_2fa_secret, $_REQUEST[ 'matthew_2fa_otp' ], 2 ) ) {
