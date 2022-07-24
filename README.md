@@ -17,7 +17,9 @@ Requires [YOURLS](https://yourls.org) `>=1.7.3` and above.
 5. Once active, head over to the "2FA Setup" section (eg. `http://sho.rt/admin/plugins.php?page=matthew_2fa_support`)
 6. Hit `Activate?` and follow the instructions.
 
-![Demo GIF](https://ghostcdn-s3.s3.us-east-1.amazonaws.com/2fa_demo2.gif?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDsaCXVzLWVhc3QtMSJHMEUCIHsgyS8HGcs0bRV9dsyzXyXYFzrgHgCoFRFzo8X23xROAiEAx8G7kiKbzysI4gnD3T4%2FCpi8p%2BrYkDe%2BB7fy%2Bq7tQlcq8QIIhP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw1ODE4MjI1MjQwODQiDLgde%2BS39SH9pNB%2BsyrFAgo1yevEo1kMfoAmP0J3qbOgg%2B3KhQgBTHyagBsOhRdURw8LwRsjOzrOABO3%2BfoyivlshVtbxdDVhlHbWMeo8f%2FTfSoq7RLaivCavVUab%2BrbPP%2B8mWzqhgqP1u5Y2LfWQZNqd9aEQrmP8oGutw70yyBqzC2Br4gy6NC3bkhO2sesDKem2lGIG%2BEhDcrMrTvdyckJugJL3pko%2BSyACNIrQ18rmWYuxm4uSX1%2FMjB7v2vowc80HTAO3MnqtNP0l%2Bg4kzJOi5iZ6nMm%2Fvdc8tm4h%2FlhfUXRMYtZ4raArlY85%2F3qJ0t8Cn82uCWy5QmsC3ofrOhp8flqNHO5SEKUa017BXgtLzP%2BCYZNb4PN4skkbYVtnW03QDEjIoZQKE2ZcxQ%2FN1VF2%2F%2BWBeHWCyrPzBRxLYWqLKgeUg1GB2FOPNmCLvDfs7YoNRkwn%2FLwlgY6swJFWxvOIsBrE1y4XxuThBHjn9HEU1Th4S83EhA2ukC7DmdgJHywPNPQdbdlYnr9ixEBIgBaBQMLDVNs5Nprj6PsraRW6UraS%2BnUn4UGIIvUhQWaZSjoNPpJLntvcQ%2BoPegmryIXblouPEsrJ4lUHdQLBWloBQ1G2C7vqRShYemtV4OyzUngPx03KHHiS3y74Skw1lY9Y8QxOSrGahuRi3vMFEXydzjpzKbVPyHDdlB5RF24k2Nii0jj%2F2ZNCM9Q2ZT1ukxz31uKnjEpR8Pz%2BCEuo5hKnf8gxMchEo8%2F4mrURowAMdD8KUfTA2SviCdQcC%2B5BQMvuaYvkolXsUQGBhXE6jMBDIlRrwXYMyJAfYC7MshAEZ408r%2F5V5I03shIQhPVWBNkaUqLtM99MsWlGSnNpJw8&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220724T040611Z&X-Amz-SignedHeaders=host&X-Amz-Expires=43200&X-Amz-Credential=ASIAYO52TFK2M4YK2AIQ%2F20220724%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=32fd0f0077b46c483d77cbd128fdf22143e5d609c0db270ccbc60f4b30af3819)
+
+https://user-images.githubusercontent.com/16270955/180631967-bc8fd27f-4d33-4f81-9f25-85abb9f7ff93.mp4
+
 
 ## License
 
