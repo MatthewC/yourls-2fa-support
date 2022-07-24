@@ -36,6 +36,7 @@ function matthew_2fa_display_page() {
             // Code was correct, so activate 2fa.
             $matthew_2fa_tokens[ YOURLS_USER ][ 'active' ] = true;
             yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
+            matthew_2fa_display_deactivate();
             return;
         } else {
             // Wrong code.
