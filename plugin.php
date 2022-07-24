@@ -28,33 +28,23 @@ function matthew_2fa_init() {
 function matthew_2fa_display_page() {
     $matthew_2fa_tokens = json_decode( yourls_get_option( 'matthew_2fa_tokens' ), true );
 
-    if( isset( $_POST[ 'matthew_2fa_token' ] ) ) {
+    if( is_otp() && isset( $_POST[ 'matthew_2fa_otp_token' ] ) ) {
         yourls_verify_nonce( 'matthew_2fa_validation' );
-        $matthew_2fa_token_ga = new PHPGangsta_GoogleAuthenticator();
-        
-        if( $matthew_2fa_token_ga->verifyCode( $matthew_2fa_tokens[ YOURLS_USER ][ 'secret' ], $_POST[ 'matthew_2fa_token' ], 2 ) ) {
-            // Code was correct, so activate 2fa.
-            $matthew_2fa_tokens[ YOURLS_USER ][ 'active' ] = true;
-            yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
-            echo '<p><span color="green">'. yourls_( 'Activated!' ). '</span></p>';
-            matthew_2fa_display_deactivate();
+        if( matthew_2fa_handle_otp_activate() ) {
             return;
-        } else {
-            // Wrong code.
-            echo '<p><span color="red">'. yourls_( 'Incorrect token entered, new QR generated' ). '</span></p>';
-        } 
+        }
     }
 
     // If key doesn't exist for the current user, then set default values.
     if( !array_key_exists( YOURLS_USER, $matthew_2fa_tokens ) || !$matthew_2fa_tokens[ YOURLS_USER ][ 'active' ] ) {
         $matthew_2fa_tokens[ YOURLS_USER ] = [
             'active' => false,
-            'type' => 'otp',
+            'type' => '',
             'secret' => '',
         ];
         yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
 
-        if( isset( $_POST[ 'activate' ] ) || isset( $_POST[ 'matthew_2fa_token' ] ) ) {
+        if( isset( $_POST[ 'activate' ] ) && is_opt() || isset( $_POST[ 'matthew_2fa_otp_token' ] ) ) {
             yourls_verify_nonce( 'matthew_2fa_activate' );
 
             // Display QR code along with verification form
@@ -78,6 +68,24 @@ function matthew_2fa_display_page() {
     }
 }
 
+function matthew_2fa_handle_otp_activate() {
+    $matthew_2fa_token_ga = new PHPGangsta_GoogleAuthenticator();
+        
+        if( $matthew_2fa_token_ga->verifyCode( $matthew_2fa_tokens[ YOURLS_USER ][ 'secret' ], $_POST[ 'matthew_2fa_otp_token' ], 2 ) ) {
+            // Code was correct, so activate 2fa.
+            $matthew_2fa_tokens[ YOURLS_USER ][ 'active' ] = true;
+            yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
+            echo '<p><span color="green">'. yourls_( 'Activated!' ). '</span></p>';
+            matthew_2fa_display_deactivate();
+
+            return true;
+        } else {
+            // Wrong code.
+            echo '<p><span color="red">'. yourls_( 'Incorrect token entered, new QR generated' ). '</span></p>';
+            return false;
+        } 
+}
+
 function matthew_2fa_display_activate() {
     $matthew_2fa_nonce = yourls_nonce_field( 'matthew_2fa_activate');
     $matthew_2fa_activate_text = yourls__( 'Activate' );
@@ -86,6 +94,12 @@ function matthew_2fa_display_activate() {
         <h2>2FA Settings</h2>
         <form method="post">
             $matthew_2fa_nonce
+            <p>
+                <label for="matthew_2fa_type">Choose 2FA type:</label>
+                <select id="matthew_2fa_type" name="matthew_2fa_type">
+                    <option value="otp">OTP</option>
+                </select> 
+            </p>
             <p><input type="submit" name="activate" value="$matthew_2fa_activate_text" class="button" /></p>
         </form>
     </main>
@@ -100,6 +114,7 @@ function matthew_2fa_display_token() {
 
     // Save secret
     $matthew_2fa_tokens[ YOURLS_USER ][ 'secret' ] = $matthew_2fa_secret;
+    $matthew_2fa_tokens[ YOURLS_USER ][ 'type' ] = 'otp';
     yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
 
     // Display QR code & prompt to verify token
@@ -112,7 +127,7 @@ function matthew_2fa_display_token() {
                 <?php yourls_nonce_field( 'matthew_2fa_validation' ); ?>
                 <p>
                     <label><?php yourls_e( 'Verify token:' ); ?></label>
-                    <input type="text" name="matthew_2fa_token" />
+                    <input type="text" name="matthew_2fa_otp_token" />
                 </p>
                 <p><input type="submit" value="<?php yourls_e( 'Verify' ); ?>" class="button" /></p>
             </form>
@@ -197,4 +212,8 @@ function matthew_2fa_verify_otp( $matthew_2fa_user_settings ) {
 
     // Token wasn't corret. Login failed
     return false;
+}
+
+function is_otp() {
+    return isset( $_POST[ 'matthew_2fa_type' ] ) && $_POST[ 'matthew_2fa_type' ] == 'otp';
 }
