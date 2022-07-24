@@ -68,7 +68,7 @@ function matthew_2fa_display_page() {
         $matthew_2fa_tokens[ YOURLS_USER ][ 'secret' ] = '';
         yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
 
-        echo '<p><span color="green">Deactivated!</span></p>';
+        echo '<p><span color="green">'. yourls__( 'Deactivate' ). '</span></p>';
         matthew_2fa_display_activate();
     } else {
         matthew_2fa_display_deactivate();
@@ -77,12 +77,13 @@ function matthew_2fa_display_page() {
 
 function matthew_2fa_display_activate() {
     $matthew_2fa_nonce = yourls_nonce_field('matthew_2fa_activate');
+    $matthew_2fa_activate_text = yourls__( 'Activate' );
     echo <<<SETT
     <main>
         <h2>2FA Settings</h2>
         <form method="post">
             $matthew_2fa_nonce
-            <p><input type="submit" name="activate" value="Activate?" class="button" /></p>
+            <p><input type="submit" name="activate" value="$matthew_2fa_activate_text" class="button" /></p>
         </form>
     </main>
     SETT;
