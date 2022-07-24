@@ -68,7 +68,7 @@ function matthew_2fa_display_page() {
         $matthew_2fa_tokens[ YOURLS_USER ][ 'secret' ] = '';
         yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
 
-        echo '<p><span color="green">'. yourls__( 'Deactivate' ). '</span></p>';
+        echo '<p><span color="green">'. yourls__( 'Deactivated!' ). '</span></p>';
         matthew_2fa_display_activate();
     } else {
         matthew_2fa_display_deactivate();
@@ -100,34 +100,34 @@ function matthew_2fa_display_token() {
     yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
 
     // Display QR code & prompt to verify token
-    $matthew_2fa_nonce = yourls_nonce_field('matthew_2fa_validation');
-    echo <<<QR
+    ?>
     <main>
         <center>
-            <img src="$matthew_2fa_qr" /><br>
+            <img src="<?php echo $matthew_2fa_qr; ?>" /><br>
 
             <form method="post">
-                $matthew_2fa_nonce
+                <?php yourls_nonce_field('matthew_2fa_validation'); ?>
                 <p>
-                    <label>Verify token:</label>
+                    <label><?php yourls_e( 'Verify token:' ); ?></label>
                     <input type="text" name="matthew_2fa_token" />
                 </p>
-                <p><input type="submit" value="Verify" class="button" /></p>
+                <p><input type="submit" value="<?php yourls_e( 'Verify' ); ?>" class="button" /></p>
             </form>
         </center>
     </main>
-    QR;
+    <?php
 }
 
 function matthew_2fa_display_deactivate() {
     $matthew_2fa_nonce = yourls_nonce_field('matthew_2fa_deactivate');
+    $matthew_2fa_deactivate_text = yourls__( 'Deactivate' );
 
     echo <<<DEAC
     <main>
         <h2>2FA Settings</h2>
         <form method="post">
             $matthew_2fa_nonce
-            <p><input type="submit" name="deactivate" value="Deactivate?" class="button" /></p>
+            <p><input type="submit" name="deactivate" value="$matthew_2fa_deactivate_text" class="button" /></p>
         </form>
     </main>
     DEAC;
