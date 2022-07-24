@@ -36,11 +36,12 @@ function matthew_2fa_display_page() {
             // Code was correct, so activate 2fa.
             $matthew_2fa_tokens[ YOURLS_USER ][ 'active' ] = true;
             yourls_update_option( 'matthew_2fa_tokens', json_encode( $matthew_2fa_tokens ) );
+            echo '<p><span color="green">'. yourls_( 'Activated!' ). '</span></p>';
             matthew_2fa_display_deactivate();
             return;
         } else {
             // Wrong code.
-            echo '<p><span color="red">Incorrect token entered, new QR generated</span></p>';
+            echo '<p><span color="red">'. yourls_( 'Incorrect token entered, new QR generated' ). '</span></p>';
         } 
     }
 
@@ -76,7 +77,7 @@ function matthew_2fa_display_page() {
 }
 
 function matthew_2fa_display_activate() {
-    $matthew_2fa_nonce = yourls_nonce_field('matthew_2fa_activate');
+    $matthew_2fa_nonce = yourls_nonce_field( 'matthew_2fa_activate');
     $matthew_2fa_activate_text = yourls__( 'Activate' );
     echo <<<SETT
     <main>
@@ -106,7 +107,7 @@ function matthew_2fa_display_token() {
             <img src="<?php echo $matthew_2fa_qr; ?>" /><br>
 
             <form method="post">
-                <?php yourls_nonce_field('matthew_2fa_validation'); ?>
+                <?php yourls_nonce_field( 'matthew_2fa_validation' ); ?>
                 <p>
                     <label><?php yourls_e( 'Verify token:' ); ?></label>
                     <input type="text" name="matthew_2fa_token" />
@@ -119,7 +120,7 @@ function matthew_2fa_display_token() {
 }
 
 function matthew_2fa_display_deactivate() {
-    $matthew_2fa_nonce = yourls_nonce_field('matthew_2fa_deactivate');
+    $matthew_2fa_nonce = yourls_nonce_field( 'matthew_2fa_deactivate' );
     $matthew_2fa_deactivate_text = yourls__( 'Deactivate' );
 
     echo <<<DEAC
